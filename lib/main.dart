@@ -56,16 +56,6 @@ class OnlineFriendPage extends StatelessWidget {
         },
         // child: Text('オンラインフレンド一覧'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // pushした際に、フレンド詳細画面に遷移
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) {
-              return const UserShowPage();
-            }),
-          );
-        },
-      ),
     );
   }
 
