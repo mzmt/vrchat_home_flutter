@@ -41,9 +41,17 @@ class OnlineFriendPage extends StatelessWidget {
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(snapshot.data![index].name,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return const UserShowPage();
+                            }));
+                          },
+                          child: Text(snapshot.data![index].name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ),
                         const Divider()
                       ]);
                 });
