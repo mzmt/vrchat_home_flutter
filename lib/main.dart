@@ -30,32 +30,30 @@ class OnlineFriendPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: FutureBuilder<List<User>>(
-          future: fetchUsersFromGitHub(),
-          builder: (context, snapshot) {
-            // APIからデータを取得できている場合
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(snapshot.data![index].name,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                          const Divider()
-                        ]);
-                  });
-              // APIリクエストが失敗した時
-            } else if (snapshot.hasError) {
-              return const Text('データの取得に失敗しました。お問い合わせフォームからご連絡ください。');
-            }
+      body: FutureBuilder<List<User>>(
+        future: fetchUsersFromGitHub(),
+        builder: (context, snapshot) {
+          // APIからデータを取得できている場合
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(snapshot.data![index].name,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        const Divider()
+                      ]);
+                });
+            // APIリクエストが失敗した時
+          } else if (snapshot.hasError) {
+            return const Text('データの取得に失敗しました。お問い合わせフォームからご連絡ください。');
+          }
 
-            return const CircularProgressIndicator();
-          },
-        ),
+          return const CircularProgressIndicator();
+        },
         // child: Text('オンラインフレンド一覧'),
       ),
       floatingActionButton: FloatingActionButton(
