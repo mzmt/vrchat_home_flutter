@@ -75,7 +75,6 @@ class OnlineFriendPage extends StatelessWidget {
     final url = Uri.https('api.github.com', '/users');
     final response = await http.get(url);
 
-    print(response.body);
     List responseJson = json.decode(response.body.toString());
     List<User> userList = createUserList(responseJson);
     return userList;
