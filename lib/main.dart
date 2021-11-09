@@ -3,6 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'user.dart';
+import 'dart:io';
+import 'package:cookie_jar/cookie_jar.dart';
+
+final cj = CookieJar();
 
 void main() {
   runApp(const MyApp());
@@ -106,4 +110,21 @@ class UserShowPage extends StatelessWidget {
       ),
     );
   }
+}
+
+void login(String username, String password) async {
+  final String basicAuth =
+      'Basic ' + base64Encode(utf8.encode('$username:$password'));
+  final Uri url = Uri.https('api.vrchat.cloud', "/api/1/auth/user");
+  final response = await http
+      .get(url, headers: <String, String>{'authorization': basicAuth});
+  String? cookie = response.headers[HttpHeaders.setCookieHeader];
+  // ??= もしnullなら代入
+  cookie ??= '';
+  List<Cookie> cookies = [
+    // Stringクラスから、_Cookieクラスに変換する
+    Cookie.fromSetCookieValue(cookie),
+  ];
+  //Save cookies
+  await cj.saveFromResponse(Uri.parse("https:///api.vrchat.cloud/"), cookies);
 }
