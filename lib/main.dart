@@ -22,14 +22,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const OnlineFriendPage(),
+      home: const OnlineFriendsPage(),
     );
   }
 }
 
-// オンラインユーザー一覧
-class OnlineFriendPage extends StatelessWidget {
-  const OnlineFriendPage({Key? key}) : super(key: key);
+// オンラインフレンド一覧
+class OnlineFriendsPage extends StatelessWidget {
+  const OnlineFriendsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +137,7 @@ void login(String username, String password) async {
   final String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$username:$password'));
   final Uri url = Uri.https('api.vrchat.cloud', "/api/1/auth/user");
-  final response = await http
+  final http.Response response = await http
       .get(url, headers: <String, String>{'authorization': basicAuth});
   String? cookie = response.headers[HttpHeaders.setCookieHeader];
   // ??= もしnullなら代入
