@@ -71,6 +71,26 @@ class OnlineFriendPage extends StatelessWidget {
     );
   }
 
+  Future<List<User>> fetchOnlineFriendsFromVRChat() async {
+    List<Cookie> cookies =
+        await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
+    if (cookies.isEmpty) {
+      // ログイン画面にリダイレクト
+    }
+    String cookie = _getCookieString(cookies);
+
+    final Uri url = Uri.https('api.vrchat.cloud', '/api/1/auth/user/friends', {
+      'offline': 'false',
+      'apiKey': '',
+    });
+    final http.Response response =
+        await http.get(url, headers: <String, String>{'Cookie': cookie});
+
+    List<String> responseJson = json.decode(response.body.toString());
+    List<User> userList = createUserList(responseJson);
+    return userList;
+  }
+
   Future<List<User>> fetchUsersFromGitHub() async {
     final url = Uri.https('api.github.com', '/users');
     final response = await http.get(url);
@@ -80,6 +100,7 @@ class OnlineFriendPage extends StatelessWidget {
     return userList;
   }
 
+  // todo: VRC APIのものと差し替える
   List<User> createUserList(List data) {
     List<User> list = [];
     for (int i = 0; i < data.length; i++) {
@@ -127,4 +148,8 @@ void login(String username, String password) async {
   ];
   //Save cookies
   await cj.saveFromResponse(Uri.parse("https:///api.vrchat.cloud/"), cookies);
+}
+
+String _getCookieString(List<Cookie> cookies) {
+  return cookies.map((cookie) => "${cookie.name}=${cookie.value}").join('; ');
 }
