@@ -35,7 +35,7 @@ class OnlineFriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<User>>(
-        future: fetchUsersFromGitHub(),
+        future: fetchOnlineFriendsFromVRChat(),
         builder: (context, snapshot) {
           // APIからデータを取得できている場合
           if (snapshot.hasData) {
@@ -52,13 +52,15 @@ class OnlineFriendsPage extends StatelessWidget {
                               return const UserShowPage();
                             }));
                           },
-                          child: Text(snapshot.data![index].name,
+                          child: Text(snapshot.data![index].displayName,
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const Divider()
                       ]);
                 });
+            // } else if(snapshot.data!.isEmpty) {
+            //   return const Text('オンラインのフレンドはいません。');
             // APIリクエストが失敗した時
           } else if (snapshot.hasError) {
             return const Text('データの取得に失敗しました。お問い合わせフォームからご連絡ください。');
@@ -86,27 +88,22 @@ class OnlineFriendsPage extends StatelessWidget {
     final http.Response response =
         await http.get(url, headers: <String, String>{'Cookie': cookie});
 
-    List<String> responseJson = json.decode(response.body.toString());
-    List<User> userList = createUserList(responseJson);
+    if (response.statusCode != 200) {
+      // エラーが発生しました
+      List<User> userList = [];
+      return userList;
+    }
+
+    final responseMap = json.decode(response.body).cast<Map<String, dynamic>>();
+    List<User> userList = createUserList(responseMap);
     return userList;
   }
 
-  Future<List<User>> fetchUsersFromGitHub() async {
-    final url = Uri.https('api.github.com', '/users');
-    final response = await http.get(url);
-
-    List responseJson = json.decode(response.body.toString());
-    List<User> userList = createUserList(responseJson);
-    return userList;
-  }
-
-  // todo: VRC APIのものと差し替える
   List<User> createUserList(List data) {
     List<User> list = [];
     for (int i = 0; i < data.length; i++) {
-      String title = data[i]["login"];
-      int id = data[i]["id"];
-      User user = User(name: title, id: id);
+      String displayName = data[i]["displayName"];
+      User user = User(displayName: displayName);
       list.add(user);
     }
     return list;
