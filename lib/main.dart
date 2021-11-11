@@ -42,6 +42,14 @@ class OnlineFriendsPage extends StatelessWidget {
             return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
+                  String thumbnailUrl;
+                  if (snapshot.data![index].profilePicOverride.isNotEmpty) {
+                    thumbnailUrl = snapshot.data![index].profilePicOverride;
+                  } else {
+                    thumbnailUrl =
+                        snapshot.data![index].currentAvatarThumbnailImageUrl;
+                  }
+
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -51,8 +59,7 @@ class OnlineFriendsPage extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.network(
-                                snapshot.data![index]
-                                    .currentAvatarThumbnailImageUrl,
+                                thumbnailUrl,
                                 width: 120,
                               ),
                             ),
@@ -96,7 +103,7 @@ class OnlineFriendsPage extends StatelessWidget {
     if (cookies.isEmpty) {
       // ログイン画面にリダイレクト
     }
-    String cookie = _getCookieString(cookies);
+    final String cookie = _getCookieString(cookies);
 
     final Uri url = Uri.https('api.vrchat.cloud', '/api/1/auth/user/friends', {
       'offline': 'false',
@@ -119,12 +126,12 @@ class OnlineFriendsPage extends StatelessWidget {
   List<User> createUserList(List data) {
     List<User> list = [];
     for (int i = 0; i < data.length; i++) {
-      String displayName = data[i]["displayName"];
-      User user = User(displayName: displayName);
-      String thumbnailUrl = data[i]["currentAvatarThumbnailImageUrl"];
       User user = User(
-          displayName: displayName,
-          currentAvatarThumbnailImageUrl: thumbnailUrl);
+        displayName: data[i]["displayName"],
+        currentAvatarThumbnailImageUrl: data[i]
+            ["currentAvatarThumbnailImageUrl"],
+        profilePicOverride: data[i]["profilePicOverride"],
+      );
       list.add(user);
     }
     return list;

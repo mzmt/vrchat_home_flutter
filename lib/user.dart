@@ -7,7 +7,7 @@ class User {
   String currentAvatarThumbnailImageUrl;
   // String fallbackAvatar;
   // String userIcon;
-  // String profilePicOverride;
+  String profilePicOverride;
   // String last_platform;
   // List<String> tags;
   // String developerType;
@@ -27,7 +27,7 @@ class User {
     required this.currentAvatarThumbnailImageUrl,
     // required this.fallbackAvatar,
     // required this.userIcon,
-    // required this.profilePicOverride,
+    required this.profilePicOverride,
     // required this.last_platform,
     // required this.tags,
     // required this.developerType,
