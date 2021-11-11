@@ -48,10 +48,13 @@ class OnlineFriendsPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Image.network(
-                              snapshot
-                                  .data![index].currentAvatarThumbnailImageUrl,
-                              width: 120,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                snapshot.data![index]
+                                    .currentAvatarThumbnailImageUrl,
+                                width: 120,
+                              ),
                             ),
                             TextButton(
                               onPressed: () {
