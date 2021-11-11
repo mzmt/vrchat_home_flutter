@@ -56,16 +56,20 @@ class OnlineFriendsPage extends StatelessWidget {
                                 width: 120,
                               ),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return const UserShowPage();
-                                }));
-                              },
-                              child: Text(snapshot.data![index].displayName,
+                            Flexible(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return const UserShowPage();
+                                  }));
+                                },
+                                child: Text(
+                                  snapshot.data![index].displayName,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
                           ],
                         ),
