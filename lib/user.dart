@@ -4,7 +4,7 @@ class User {
   String displayName;
   // String? bio;
   // String currentAvatarImageUrl;
-  // String currentAvatarThumbnailImageUrl;
+  String currentAvatarThumbnailImageUrl;
   // String fallbackAvatar;
   // String userIcon;
   // String profilePicOverride;
@@ -24,7 +24,7 @@ class User {
     required this.displayName,
     // this.bio,
     // required this.currentAvatarImageUrl,
-    // required this.currentAvatarThumbnailImageUrl,
+    required this.currentAvatarThumbnailImageUrl,
     // required this.fallbackAvatar,
     // required this.userIcon,
     // required this.profilePicOverride,

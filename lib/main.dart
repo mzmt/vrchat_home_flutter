@@ -45,6 +45,10 @@ class OnlineFriendsPage extends StatelessWidget {
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Image.network(
+                          snapshot.data![index].currentAvatarThumbnailImageUrl,
+                          width: 120,
+                        ),
                         TextButton(
                           onPressed: () {
                             Navigator.of(context)
@@ -104,6 +108,10 @@ class OnlineFriendsPage extends StatelessWidget {
     for (int i = 0; i < data.length; i++) {
       String displayName = data[i]["displayName"];
       User user = User(displayName: displayName);
+      String thumbnailUrl = data[i]["currentAvatarThumbnailImageUrl"];
+      User user = User(
+          displayName: displayName,
+          currentAvatarThumbnailImageUrl: thumbnailUrl);
       list.add(user);
     }
     return list;
