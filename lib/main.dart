@@ -45,20 +45,26 @@ class OnlineFriendsPage extends StatelessWidget {
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Image.network(
-                          snapshot.data![index].currentAvatarThumbnailImageUrl,
-                          width: 120,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                              return const UserShowPage();
-                            }));
-                          },
-                          child: Text(snapshot.data![index].displayName,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Image.network(
+                              snapshot
+                                  .data![index].currentAvatarThumbnailImageUrl,
+                              width: 120,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return const UserShowPage();
+                                }));
+                              },
+                              child: Text(snapshot.data![index].displayName,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ],
                         ),
                         const Divider()
                       ]);
