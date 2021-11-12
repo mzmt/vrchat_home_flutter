@@ -6,7 +6,9 @@ import 'user.dart';
 import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 
+// cookieはストレージに保存しないとアプリ終了時に消えそう
 final cj = CookieJar();
+dynamic homeState = const LoginPage();
 
 void main() {
   runApp(const MyApp());
@@ -17,12 +19,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    auth();
     return MaterialApp(
       title: 'VRChat Checker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const OnlineFriendsPage(),
+      home: homeState,
     );
   }
 }
@@ -191,4 +194,23 @@ void login(String username, String password) async {
 
 String _getCookieString(List<Cookie> cookies) {
   return cookies.map((cookie) => "${cookie.name}=${cookie.value}").join('; ');
+}
+
+void auth() async {
+  List<Cookie> cookies =
+      await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
+
+  // 期限の切れたcookieを破棄
+  // cookies.removeWhere((cookie) {
+  //   if (cookie.expires != null) {
+  //     return cookie.expires!.isBefore(DateTime.now());
+  //   }
+  //   return false;
+  // });
+
+  if (cookies.isNotEmpty) {
+    homeState = const OnlineFriendsPage();
+  } else {
+    homeState = const LoginPage();
+  }
 }
