@@ -158,6 +158,20 @@ class UserShowPage extends StatelessWidget {
   }
 }
 
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        // child: Text(
+        child: Text('Login'),
+      ),
+    );
+  }
+}
+
 void login(String username, String password) async {
   final String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$username:$password'));
