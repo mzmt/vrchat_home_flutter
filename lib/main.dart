@@ -166,6 +166,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Log in'),
@@ -187,7 +190,7 @@ class LoginPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextField(
-                                    controller: null,
+                                    controller: usernameController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -198,7 +201,7 @@ class LoginPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 24.0),
                                   TextField(
-                                    controller: null,
+                                    controller: passwordController,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -228,6 +231,19 @@ class LoginPage extends StatelessWidget {
                                         MaterialPageRoute(builder: (context) {
                                       return const OnlineFriendsPage();
                                     }));
+                                    if (Text(usernameController.text).data ==
+                                            '' ||
+                                        Text(passwordController.text).data ==
+                                            '') {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return const AlertDialog(
+                                            content: Text('フォームに値を入力してください'),
+                                          );
+                                        },
+                                      );
+                                    }
                                   },
                                   child: const Text('login'),
                                 ),
