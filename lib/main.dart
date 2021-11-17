@@ -243,6 +243,7 @@ class LoginPage extends StatelessWidget {
                                           );
                                         },
                                       );
+                                      return;
                                     }
                                   },
                                   child: const Text('login'),
