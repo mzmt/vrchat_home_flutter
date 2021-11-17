@@ -256,7 +256,13 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-void login(String username, String password) async {
+Future<bool> login(String username, String password) async {
+  List<Cookie> oldCookies =
+      await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
+  if (oldCookies.isNotEmpty) {
+    return false;
+  }
+
   final String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$username:$password'));
   final Uri url = Uri.https('api.vrchat.cloud', "/api/1/auth/user");
@@ -271,6 +277,7 @@ void login(String username, String password) async {
   ];
   //Save cookies
   await cj.saveFromResponse(Uri.parse("https:///api.vrchat.cloud/"), cookies);
+  return true;
 }
 
 String _getCookieString(List<Cookie> cookies) {
