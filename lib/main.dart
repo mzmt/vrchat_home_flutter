@@ -245,6 +245,26 @@ class LoginPage extends StatelessWidget {
                                       );
                                       return;
                                     }
+                                    login(Text(usernameController.text).data!,
+                                            Text(passwordController.text).data!)
+                                        .then((result) {
+                                      if (result) {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const OnlineFriendsPage();
+                                        }));
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return const AlertDialog(
+                                              content: Text('ログインに失敗しました'),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    });
                                   },
                                   child: const Text('login'),
                                 ),
@@ -261,7 +281,7 @@ Future<bool> login(String username, String password) async {
   List<Cookie> oldCookies =
       await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
   if (oldCookies.isNotEmpty) {
-    return false;
+    return true;
   }
 
   final String basicAuth =
@@ -272,6 +292,9 @@ Future<bool> login(String username, String password) async {
   String? cookie = response.headers[HttpHeaders.setCookieHeader];
   // ??= もしnullなら代入
   cookie ??= '';
+  if (cookie.isEmpty) {
+    return false;
+  }
   List<Cookie> cookies = [
     // Stringクラスから、_Cookieクラスに変換する
     Cookie.fromSetCookieValue(cookie),
