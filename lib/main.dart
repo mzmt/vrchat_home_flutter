@@ -5,6 +5,7 @@ import 'dart:async';
 import 'user.dart';
 import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // cookieはストレージに保存しないとアプリ終了時に消えそう
 final cj = CookieJar();
