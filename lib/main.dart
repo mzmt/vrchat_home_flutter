@@ -162,14 +162,20 @@ class UserShowPage extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
+  _LoginPageState createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  bool _hidePassword = true;
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Log in'),
@@ -202,15 +208,25 @@ class LoginPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 24.0),
                                   TextField(
-                                    controller: passwordController,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      labelText: 'password',
-                                    ),
-                                  )
+                                      obscureText: _hidePassword,
+                                      controller: passwordController,
+                                      decoration: InputDecoration(
+                                          labelText: 'password',
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(_hidePassword
+                                                ? FontAwesomeIcons.solidEye
+                                                : FontAwesomeIcons
+                                                    .solidEyeSlash),
+                                            onPressed: () {
+                                              setState(() {
+                                                _hidePassword = !_hidePassword;
+                                              });
+                                            },
+                                          ))),
                                 ],
                               ),
                               Container(
@@ -227,11 +243,6 @@ class LoginPage extends StatelessWidget {
                                         MaterialStateProperty.all(Colors.white),
                                   ),
                                   onPressed: () {
-                                    // submit!
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return const OnlineFriendsPage();
-                                    }));
                                     if (Text(usernameController.text).data ==
                                             '' ||
                                         Text(passwordController.text).data ==
