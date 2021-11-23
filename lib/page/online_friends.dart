@@ -9,9 +9,14 @@ import 'package:http/http.dart' as http;
 import '../model/user.dart';
 import 'user_profile.dart';
 
-class OnlineFriendsPage extends StatelessWidget {
+class OnlineFriendsPage extends StatefulWidget {
   const OnlineFriendsPage({Key? key}) : super(key: key);
 
+  @override
+  _OnlineFriendsPageState createState() => _OnlineFriendsPageState();
+}
+
+class _OnlineFriendsPageState extends State<OnlineFriendsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +78,13 @@ class OnlineFriendsPage extends StatelessWidget {
 
           return const CircularProgressIndicator();
         },
-        // child: Text('オンラインフレンド一覧'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {});
+        },
+        child: const Icon(Icons.sync_rounded),
+        backgroundColor: Colors.blue,
       ),
     );
   }
