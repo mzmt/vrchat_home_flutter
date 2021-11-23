@@ -49,7 +49,7 @@ class OnlineFriendsPage extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return const UserShowPage();
+                                    return const UserProfilePage();
                                   }));
                                 },
                                 child: Text(
