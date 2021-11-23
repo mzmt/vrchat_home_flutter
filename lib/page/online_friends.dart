@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/user.dart';
@@ -78,17 +79,17 @@ class OnlineFriendsPage extends StatelessWidget {
   }
 
   Future<List<User>> fetchOnlineFriendsFromVRChat() async {
-    List<Cookie> cookies =
-        await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
-    if (cookies.isEmpty) {
+    const storage = FlutterSecureStorage();
+    String? cookies = await storage.read(key: 'cookie');
+    if (cookies == null) {
       // ログイン画面にリダイレクト
+      return <User>[];
     }
-    final String cookie = getCookieString(cookies);
 
     final Uri url = Uri.https('api.vrchat.cloud', '/api/1/auth/user/friends',
         {'offline': 'false', 'apiKey': dotenv.env['API_KEY']});
     final http.Response response =
-        await http.get(url, headers: <String, String>{'Cookie': cookie});
+        await http.get(url, headers: <String, String>{'Cookie': cookies});
 
     if (response.statusCode != 200) {
       // エラーが発生しました

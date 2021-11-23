@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cookie_jar/cookie_jar.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'page/login.dart';
 import 'page/online_friends.dart';
 
-final cj = CookieJar();
 dynamic homeState = const LoginPage();
 
 Future<bool> login(String username, String password) async {
-  List<Cookie> oldCookies =
-      await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
-  if (oldCookies.isNotEmpty) {
+  const storage = FlutterSecureStorage();
+  String? oldCookie = await storage.read(key: 'cookie');
+
+  if (oldCookie != null) {
     return true;
   }
 
@@ -24,39 +24,24 @@ Future<bool> login(String username, String password) async {
   final http.Response response = await http
       .get(url, headers: <String, String>{'authorization': basicAuth});
   String? cookie = response.headers[HttpHeaders.setCookieHeader];
-  // ??= もしnullなら代入
-  cookie ??= '';
-  if (cookie.isEmpty) {
+  if (cookie == null) {
     return false;
   }
-  List<Cookie> cookies = [
-    // Stringクラスから、_Cookieクラスに変換する
-    Cookie.fromSetCookieValue(cookie),
-  ];
-  //Save cookies
-  await cj.saveFromResponse(Uri.parse("https:///api.vrchat.cloud/"), cookies);
+
+  await storage.write(key: 'cookie', value: cookie);
   return true;
 }
 
-String getCookieString(List<Cookie> cookies) {
-  return cookies.map((cookie) => "${cookie.name}=${cookie.value}").join('; ');
-}
-
-void auth() async {
-  List<Cookie> cookies =
-      await cj.loadForRequest(Uri.parse("https:///api.vrchat.cloud/"));
+Future<void> auth() async {
+  const storage = FlutterSecureStorage();
+  String? cookies = await storage.read(key: 'cookie');
 
   // 期限の切れたcookieを破棄
-  // cookies.removeWhere((cookie) {
-  //   if (cookie.expires != null) {
-  //     return cookie.expires!.isBefore(DateTime.now());
-  //   }
-  //   return false;
-  // });
+  // storage.delete(key: 'cookie');
 
-  if (cookies.isNotEmpty) {
-    homeState = const OnlineFriendsPage();
-  } else {
+  if (cookies == null) {
     homeState = const LoginPage();
+  } else {
+    homeState = const OnlineFriendsPage();
   }
 }

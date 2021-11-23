@@ -7,6 +7,7 @@ import 'auth.dart';
 
 Future main() async {
   await dotenv.load(fileName: '.env');
+  await auth();
   runApp(const MyApp());
 }
 
