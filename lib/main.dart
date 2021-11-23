@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:async';
-import 'user.dart';
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+
+import 'model/user.dart';
 
 // cookieはストレージに保存しないとアプリ終了時に消えそう
 final cj = CookieJar();
@@ -111,10 +113,8 @@ class OnlineFriendsPage extends StatelessWidget {
     }
     final String cookie = _getCookieString(cookies);
 
-    final Uri url = Uri.https('api.vrchat.cloud', '/api/1/auth/user/friends', {
-      'offline': 'false',
-      'apiKey': dotenv.env['API_KEY'],
-    });
+    final Uri url = Uri.https('api.vrchat.cloud', '/api/1/auth/user/friends',
+        {'offline': 'false', 'apiKey': dotenv.env['API_KEY']});
     final http.Response response =
         await http.get(url, headers: <String, String>{'Cookie': cookie});
 
