@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'login.dart';
+import '../auth.dart';
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -15,7 +18,12 @@ class SettingsPage extends StatelessWidget {
         ListTile(
           title: TextButton(
               onPressed: () {
-                // logout and go to login page
+                logout().then((_) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return const LoginPage();
+                  }));
+                });
               },
               child: const Align(
                   alignment: Alignment.centerLeft, child: Text('Logout'))),

@@ -32,6 +32,11 @@ Future<bool> login(String username, String password) async {
   return true;
 }
 
+Future<void> logout() async {
+  const storage = FlutterSecureStorage();
+  await storage.delete(key: 'cookie');
+}
+
 Future<void> auth() async {
   const storage = FlutterSecureStorage();
   String? cookies = await storage.read(key: 'cookie');

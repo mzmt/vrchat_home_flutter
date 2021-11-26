@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../auth.dart';
-import 'online_friends.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Log in'),
+          automaticallyImplyLeading: false,
         ),
         body: SafeArea(
           child: LayoutBuilder(
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                                       obscureText: _hidePassword,
                                       controller: passwordController,
                                       decoration: InputDecoration(
-                                          labelText: 'password',
+                                          labelText: 'Password',
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
@@ -106,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return const OnlineFriendsPage();
+                                          return const HomePage();
                                         }));
                                       } else {
                                         showDialog(
@@ -120,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     });
                                   },
-                                  child: const Text('login'),
+                                  child: const Text('Login'),
                                 ),
                               ),
                             ],
