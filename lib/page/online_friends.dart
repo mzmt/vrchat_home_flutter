@@ -20,11 +20,6 @@ class _OnlineFriendsPageState extends State<OnlineFriendsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Online Friends'),
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-      ),
       body: FutureBuilder<List<User>>(
         future: fetchOnlineFriendsFromVRChat(),
         builder: (context, snapshot) {
