@@ -76,7 +76,7 @@ class _OnlineFriendsPageState extends State<OnlineFriendsPage> {
             return const Text('データの取得に失敗しました。お問い合わせフォームからご連絡ください。');
           }
 
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       floatingActionButton: FloatingActionButton(
