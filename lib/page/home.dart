@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'friend_requests.dart';
 import 'online_friends.dart';
 import 'settings.dart';
 
@@ -13,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     OnlineFriendsPage(),
-    OnlineFriendsPage(),
+    FriendRequestsPage(),
     SettingsPage(),
   ];
 
