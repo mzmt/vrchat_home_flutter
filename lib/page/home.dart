@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vrchat_home_flutter/page/online_friends.dart';
+import 'online_friends.dart';
+import 'settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,10 +14,7 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     OnlineFriendsPage(),
     OnlineFriendsPage(),
-    OnlineFriendsPage(),
-    // todo: replace
-    // FriendRequestsPage(),
-    // SettingsPage(),
+    SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -47,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        // selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
     );
