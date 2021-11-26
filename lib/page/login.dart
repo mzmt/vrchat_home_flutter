@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _hidePassword = true;
+  bool _nowLoading = false;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -73,57 +74,92 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                               Container(
-                                width: double.infinity,
-                                height: 54.0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.blue),
-                                    foregroundColor:
-                                        MaterialStateProperty.all(Colors.white),
+                                  width: double.infinity,
+                                  height: 54.0,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  onPressed: () {
-                                    if (Text(usernameController.text).data ==
-                                            '' ||
-                                        Text(passwordController.text).data ==
-                                            '') {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return const AlertDialog(
-                                            content: Text('フォームに値を入力してください'),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        if (Text(usernameController.text)
+                                                    .data ==
+                                                '' ||
+                                            Text(passwordController.text)
+                                                    .data ==
+                                                '') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return const AlertDialog(
+                                                content:
+                                                    Text('フォームに値を入力してください'),
+                                              );
+                                            },
                                           );
-                                        },
-                                      );
-                                      return;
-                                    }
-                                    login(Text(usernameController.text).data!,
-                                            Text(passwordController.text).data!)
-                                        .then((result) {
-                                      if (result) {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return const HomePage();
-                                        }));
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return const AlertDialog(
-                                              content: Text('ログインに失敗しました'),
+                                          return;
+                                        }
+                                        setState(() {
+                                          _nowLoading = true;
+                                        });
+                                        login(
+                                                Text(usernameController.text)
+                                                    .data!,
+                                                Text(passwordController.text)
+                                                    .data!)
+                                            .then((result) {
+                                          if (result) {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return const HomePage();
+                                            }));
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return const AlertDialog(
+                                                  content: Text('ログインに失敗しました'),
+                                                );
+                                              },
                                             );
-                                          },
-                                        );
-                                      }
-                                    });
-                                  },
-                                  child: const Text('Login'),
-                                ),
-                              ),
+                                            setState(() {
+                                              _nowLoading = false;
+                                            });
+                                          }
+                                        });
+                                      },
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.blue)),
+                                      child: _nowLoading
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: const [
+                                                  Text("Login"),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation(
+                                                              Colors.white),
+                                                      backgroundColor:
+                                                          Colors.blue,
+                                                      strokeWidth: 3,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : const Text("Login"))),
                             ],
                           ))));
             },
