@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'page/login.dart';
-import 'page/online_friends.dart';
+import 'page/home.dart';
 
 dynamic homeState = const LoginPage();
 
@@ -42,6 +42,6 @@ Future<void> auth() async {
   if (cookies == null) {
     homeState = const LoginPage();
   } else {
-    homeState = const OnlineFriendsPage();
+    homeState = const HomePage();
   }
 }
